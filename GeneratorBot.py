@@ -13,14 +13,14 @@ with open(config_file, 'r') as file:
 TOKEN = config['token']
 TEXT_FILES_DIRECTORY = 'accounts'
 PREMIUM_ROLE_ID = config['premium_role_id']
-NON_PREMIUM_COOLDOWN_TIME = 60
-PREMIUM_COOLDOWN_TIME = 30
+NON_PREMIUM_COOLDOWN_TIME = 300
+PREMIUM_COOLDOWN_TIME = 60
 GEN_COMMAND_CHANNEL_ID = config['gen_command_channel_id']
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='.', intents=intents)
+bot = commands.Bot(command_prefix='/', intents=intents)
 bot.premium_cooldowns = commands.CooldownMapping.from_cooldown(1, PREMIUM_COOLDOWN_TIME, commands.BucketType.user)
 bot.non_premium_cooldowns = commands.CooldownMapping.from_cooldown(1, NON_PREMIUM_COOLDOWN_TIME, commands.BucketType.user)
 
@@ -32,7 +32,7 @@ async def on_ready():
 @bot.command(name='gen')
 async def generate_line(ctx, service: str = None):
     if ctx.channel.id != int(GEN_COMMAND_CHANNEL_ID):
-        await ctx.send('This command can only be used in the generator channel. Made by Crys#0001')
+        await ctx.send('This command can only be used in the generator channel. ')
         return
 
     if not service:
@@ -72,7 +72,7 @@ async def generate_line(ctx, service: str = None):
         file.writelines(lines)
 
     try:
-        response = f"Generated {service.capitalize()}:\n\n**{selected_line.strip()}**\n\nThank you for using our service! Made by Crys#0001"
+        response = f"Generated {service.capitalize()}:\n\n**{selected_line.strip()}**\n\nThank you for using our service!"
         await ctx.author.send(response)
         await ctx.send('Sent to DMS.')
     except discord.Forbidden:
